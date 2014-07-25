@@ -28,7 +28,7 @@ import java.time.format.DateTimeFormatter;
  */
 public class Main {
     static Logger logger = LoggerFactory.getLogger(Main.class);
-    private static String format = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm"));
+    private static DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm");
 
 
     public static void main(String[] args) {
@@ -39,7 +39,7 @@ public class Main {
         Attendance attendance = new Attendance(new AttendanceListener() {
             @Override
             public void entered(Person person) {
-                String message = String.format("%s %s ズムなう", format, person.name);
+                String message = String.format("%s %s ズムなう", LocalDateTime.now().format(format), person.name);
                 logger.debug(message);
                 if (!dryRun) {
                     try {
@@ -52,7 +52,7 @@ public class Main {
 
             @Override
             public void left(Person person) {
-                String message = String.format("%s %s ズムあうと", format, person.name);
+                String message = String.format("%s %s ズムあうと", LocalDateTime.now().format(format), person.name);
                 logger.debug(message);
                 if (!dryRun) {
                     try {
