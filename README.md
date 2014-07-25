@@ -3,7 +3,7 @@
 ## 使い方
 ```
 $ git clone https://github.com/yusuke/smnow.git  
-$ smnow  
+$ cd smnow  
 $ mvn package  
 $ vi src/resources/twitter4j.properties  
 (書き込み可能なTwitter APIのAPIキー、アクセストークン  
