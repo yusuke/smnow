@@ -34,7 +34,7 @@ public class Main {
     public static void main(String[] args) {
         Person[] persons = Person.load();
         Twitter twitter = TwitterFactory.getSingleton();
-        boolean dryRun = true;
+        boolean dryRun = false;
 
         Attendance attendance = new Attendance(new AttendanceListener() {
             @Override
