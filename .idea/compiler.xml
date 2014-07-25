@@ -25,6 +25,9 @@
         <module name="smnow" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="smnow" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
 
