@@ -68,7 +68,7 @@ public class Main {
                 attendance.recordAttendance(person, person.isAtSamuraism());
             }
             try {
-                Thread.sleep(1000 * 60 * 5);
+                Thread.sleep(1000 * 60 * 2);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
