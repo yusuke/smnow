@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by yusuke on 7/25/14.
@@ -26,12 +28,18 @@ import java.util.Arrays;
 public final class Attendance {
     static Logger logger = LoggerFactory.getLogger(Attendance.class);
 
-    private final AttendanceListener listener;
+    private final List<AttendanceListener> listeners;
     static final String ATTENDANCE_HISTORY = ".attendanceHistory";
     static final String IS_AT_SAMURAISM = ".isAtSamuraism";
 
     Attendance(AttendanceListener listener) {
-        this.listener = listener;
+        List<AttendanceListener> list = new ArrayList<>();
+        list.add(listener);
+        this.listeners = Collections.unmodifiableList(list);
+    }
+
+    Attendance(AttendanceListener... listeners) {
+        this.listeners = Arrays.asList(listeners);
     }
 
     void recordAttendance(Person person, boolean latestAttendance) {
@@ -53,14 +61,14 @@ public final class Attendance {
             if (latestAttendance) {
                 logger.debug("{} entered", person.name);
                 isAtSamuraism = true;
-                listener.entered(person);
+                listeners.forEach(listener -> listener.entered(person));
             }
         } else {
             // 3回連続で不在状態を検知したら不在を通知
             if (strings.stream().allMatch(e -> e.equals("false"))) {
                 logger.debug("{} left", person.name);
                 isAtSamuraism = false;
-                listener.left(person);
+                listeners.forEach(listener -> listener.left(person));
             }
         }
 

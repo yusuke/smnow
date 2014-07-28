@@ -2,6 +2,7 @@ package smnow;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import smnow.hall.HallListener;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -28,41 +29,14 @@ import java.time.format.DateTimeFormatter;
  */
 public class Main {
     static Logger logger = LoggerFactory.getLogger(Main.class);
-    private static DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm");
-
 
     public static void main(String[] args) {
         Person[] persons = Person.load();
-        Twitter twitter = TwitterFactory.getSingleton();
         boolean dryRun = false;
 
-        Attendance attendance = new Attendance(new AttendanceListener() {
-            @Override
-            public void entered(Person person) {
-                String message = String.format("%s %s ズムなう", LocalDateTime.now().format(format), person.name);
-                logger.debug(message);
-                if (!dryRun) {
-                    try {
-                        twitter.updateStatus(message);
-                    } catch (TwitterException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void left(Person person) {
-                String message = String.format("%s %s ズムあうと", LocalDateTime.now().format(format), person.name);
-                logger.debug(message);
-                if (!dryRun) {
-                    try {
-                        twitter.updateStatus(message);
-                    } catch (TwitterException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
+        Attendance attendance = new Attendance(
+                new TwitterListener(dryRun),
+                new HallListener(dryRun));
         while (true) {
             for (Person person : persons) {
                 attendance.recordAttendance(person, person.isAtSamuraism());
