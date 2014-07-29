@@ -73,9 +73,12 @@ public class HallListener implements AttendanceListener {
                 writer.flush();
 
                 int responseCode = connection.getResponseCode();
-                if (responseCode != 201) throw new Exception("エラーが返されたわー : " + responseCode);
-            } catch (Throwable e) {
-                e.printStackTrace();
+                if (responseCode != 201) {
+                    LOGGER.info("エラーが返されたわー : "+ responseCode);
+                }
+                LOGGER.info("Hallにメッセージ投げられたはず！");
+            } catch (Exception e) {
+                LOGGER.info("エラーが返されたわー ", e);
             } finally {
                 if (connection != null) {
                     connection.disconnect();
