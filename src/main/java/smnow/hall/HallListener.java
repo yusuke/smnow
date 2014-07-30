@@ -44,6 +44,10 @@ public class HallListener implements AttendanceListener {
     public HallListener(boolean dryRun) {
         this.dryRun = dryRun;
         this.hallKey = Optional.ofNullable(GlobalProp.getProperty(HALL_KEY));
+        this.hallKey.ifPresent(key -> LOGGER.debug("hall.key=" + this.hallKey.get()));
+        if (!this.hallKey.isPresent()) {
+            LOGGER.debug("hall.key not set");
+        }
     }
 
     @Override
@@ -74,7 +78,7 @@ public class HallListener implements AttendanceListener {
 
                 int responseCode = connection.getResponseCode();
                 if (responseCode != 201) {
-                    LOGGER.info("エラーが返されたわー : "+ responseCode);
+                    LOGGER.info("エラーが返されたわー : " + responseCode);
                 }
                 LOGGER.info("Hallにメッセージ投げられたはず！");
             } catch (Exception e) {
