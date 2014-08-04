@@ -10,7 +10,6 @@ import smnow.SMStatus;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Optional;
 
 /**
  * Copyright 2014Shinya Mochida
@@ -39,15 +38,13 @@ public class HallListener implements AttendanceListener {
 
     private final boolean dryRun;
 
-    private final Optional<String> hallKey;
+    private final ExtendedOptional<String> hallKey;
 
     public HallListener(boolean dryRun) {
         this.dryRun = dryRun;
-        this.hallKey = Optional.ofNullable(GlobalProp.getProperty(HALL_KEY));
+        this.hallKey = ExtendedOptional.ofNullable(GlobalProp.getProperty(HALL_KEY));
         this.hallKey.ifPresent(key -> LOGGER.debug("hall.key=" + this.hallKey.get()));
-        if (!this.hallKey.isPresent()) {
-            LOGGER.debug("hall.key not set");
-        }
+        this.hallKey.ifNotPresent(() -> LOGGER.debug("hall.key not set"));
     }
 
     @Override
