@@ -43,8 +43,9 @@ public class HallListener implements AttendanceListener {
     public HallListener(boolean dryRun) {
         this.dryRun = dryRun;
         this.hallKey = ExtendedOptional.ofNullable(GlobalProp.getProperty(HALL_KEY));
-        this.hallKey.ifPresent(key -> LOGGER.debug("hall.key=" + this.hallKey.get()));
-        this.hallKey.ifNotPresent(() -> LOGGER.debug("hall.key not set"));
+        this.hallKey
+                .ifPresent(key -> LOGGER.debug("hall.key=" + this.hallKey.get()))
+                .ifNotPresent(() -> LOGGER.debug("hall.key not set"));
     }
 
     @Override
