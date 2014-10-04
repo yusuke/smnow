@@ -30,7 +30,7 @@ public class HallListener implements AttendanceListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HallListener.class);
 
-    private static final String SMNW = "ズムなう";
+    private static final String SMNW = "ズムばう";
 
     private static final String HALL_API_URL = "https://hall.com/api/1/services/generic/";
 

@@ -30,7 +30,7 @@ public enum SMStatus {
     }, SMIN {
         @Override
         public String message(Person person) {
-            return String.format("%s %s ズムなう",
+            return String.format("%s %s ズムばう",
                     LocalDateTime.now(ZoneId.of(TOKYO)).format(FORMAT), person.name);
         }
     };

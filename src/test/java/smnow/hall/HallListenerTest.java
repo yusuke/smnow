@@ -26,7 +26,7 @@ public class HallListenerTest {
     public void testToJson () {
         HallListener listener = new HallListener(true);
         String json = listener.toJson("this \"test\" is a test");
-        String expected = "{\"title\":\"ズムなう\",\"message\":\"this \\\"test\\\" is a test\"}";
+        String expected = "{\"title\":\"ズムばう\",\"message\":\"this \\\"test\\\" is a test\"}";
 
         assertThat(json, is(expected));
     }
