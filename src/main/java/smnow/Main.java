@@ -27,17 +27,22 @@ import java.time.format.DateTimeFormatter;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class Main {
+public class Main implements Runnable {
     static Logger logger = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) {
+        new Main().run();
+    }
+
+    public boolean alive = true;
+
+    @Override
+    public void run() {
         Person[] persons = Person.load();
         boolean dryRun = false;
 
-        Attendance attendance = new Attendance(
-                new TwitterListener(dryRun),
-                new HallListener(dryRun));
-        while (true) {
+        Attendance attendance = new Attendance(new TwitterListener(dryRun), new HallListener(dryRun));
+        while (alive) {
             for (Person person : persons) {
                 attendance.recordAttendance(person, person.isAtSamuraism());
             }
