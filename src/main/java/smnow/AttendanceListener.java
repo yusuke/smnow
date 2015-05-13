@@ -21,4 +21,8 @@ public interface AttendanceListener {
     void entered(Person person);
 
     void left(Person person);
+
+    void allLeft(Person person);
+
+    void firstEntered(Person person);
 }

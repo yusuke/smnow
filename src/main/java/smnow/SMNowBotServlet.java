@@ -11,10 +11,11 @@ import java.io.IOException;
  * Created by yusuke on 12/9/14.
  */
 public class SMNowBotServlet extends HttpServlet {
+    Thread thread;
     Main main;
     @Override
     public void init(ServletConfig config){
-        Thread thread = new Thread(new Main());
+        thread = new Thread(new Main());
         thread.setDaemon(true);
         thread.start();
     }
@@ -28,5 +29,6 @@ public class SMNowBotServlet extends HttpServlet {
     @Override
     public void destroy(){
         main.alive = false;
+        thread.interrupt();
     }
 }

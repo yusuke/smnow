@@ -44,10 +44,12 @@ public class Person {
 
     public boolean isAtSamuraism() {
         try {
-            logger.debug("address of {} is {}", name, InetAddress.getByName(address));
-            return true;
-        } catch (UnknownHostException e) {
-            logger.debug("address of {} not found", name);
+//            logger.debug("address of {} is {}", name, InetAddress.getByName(address));
+            boolean reachable = InetAddress.getByName(address).isReachable(4000);
+            logger.debug("is {} reachable: {}", address, reachable);
+            return reachable;
+        } catch (java.io.IOException e) {
+            logger.debug("failed to test reachable", e);
             return false;
         }
 

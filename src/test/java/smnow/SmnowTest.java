@@ -2,9 +2,7 @@ package smnow;
 
 import org.junit.Test;
 
-import static junit.framework.Assert.assertTrue;
-import static junit.framework.TestCase.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
 /**
  * Created by yusuke on 7/25/14.
@@ -32,7 +30,7 @@ public class SmnowTest {
 
     @Test
     public void 在席チェックロジック() {
-        Person macmini = new Person("macmini", "macmini.local");
+        Person macmini = new Person("macmini7", "macmini7.local");
         assertTrue(macmini.isAtSamuraism());
         Person notexist = new Person("notexist", "notexist.local");
         assertFalse(notexist.isAtSamuraism());
@@ -98,6 +96,16 @@ public class SmnowTest {
         @Override
         public void left(Person person) {
             left = true;
+        }
+
+        @Override
+        public void allLeft(Person person) {
+
+        }
+
+        @Override
+        public void firstEntered(Person person) {
+
         }
     }
 }

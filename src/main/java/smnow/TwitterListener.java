@@ -62,4 +62,14 @@ public class TwitterListener implements AttendanceListener {
             }
         }
     }
+
+    @Override
+    public void allLeft(Person person) {
+
+    }
+
+    @Override
+    public void firstEntered(Person person) {
+
+    }
 }

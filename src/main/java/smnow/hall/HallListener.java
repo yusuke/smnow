@@ -60,6 +60,16 @@ public class HallListener implements AttendanceListener {
             sendMessage(SMStatus.SMOUT.message(person));
     }
 
+    @Override
+    public void allLeft(Person person) {
+
+    }
+
+    @Override
+    public void firstEntered(Person person) {
+
+    }
+
     private void sendMessage(String message) {
         hallKey.ifPresent(key -> {
             HttpURLConnection connection = null;

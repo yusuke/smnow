@@ -52,7 +52,7 @@ public final class Attendance {
         strings.add(String.valueOf(latestAttendance));
 
         //直近3回分の在席情報のみ保存
-        if (strings.size() > 3) {
+        if (strings.size() > 12) {
             strings.remove(0);
         }
 

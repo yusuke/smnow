@@ -3,12 +3,6 @@ package smnow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import smnow.hall.HallListener;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * Created by yusuke on 7/25/14.
@@ -47,7 +41,7 @@ public class Main implements Runnable {
                 attendance.recordAttendance(person, person.isAtSamuraism());
             }
             try {
-                Thread.sleep(1000 * 60 * 2);
+                Thread.sleep(1000 * 60 * 1);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
