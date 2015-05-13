@@ -8,6 +8,9 @@ import smnow.Person;
 import smnow.SMStatus;
 import smnow.hall.ExtendedOptional;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -36,11 +39,9 @@ public class SlackListener implements AttendanceListener {
 
     private static final String SMNW = "ズムばう";
 
-    private static final String HALL_API_URL = "https://hall.com/api/1/services/generic/";
-
     private static final String SLACK_API_URL = "https://slack.com/api/chat.postMessage";
 
-    private static final String SLACK_KEY = "slack.key";
+    private static final String SLACK_TOKEN = "slack.token";
 
     public static final String GENERAL_CHANNEL = "slack.channel.general";
 
@@ -52,7 +53,7 @@ public class SlackListener implements AttendanceListener {
 
     public SlackListener(boolean dryRun) {
         this.dryRun = dryRun;
-        this.slackToken = getKey(SLACK_KEY);
+        this.slackToken = getKey(SLACK_TOKEN);
         this.channel = getKey(GENERAL_CHANNEL);
     }
 
@@ -104,8 +105,9 @@ public class SlackListener implements AttendanceListener {
                 if (responseCode != 200) {
                     LOGGER.info("スラックに送れんかった : " + responseCode);
                 }
-                LOGGER.info("Hallにメッセージ投げられたはず！");
+                LOGGER.info("slackにメッセージ投げられたはず！");
             } catch (Exception e) {
+                e.printStackTrace();
                 LOGGER.info("エラーが返されたわー ", e);
             } finally {
                 if (connection != null) {

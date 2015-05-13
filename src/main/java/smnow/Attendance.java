@@ -51,8 +51,8 @@ public final class Attendance {
         ArrayList<String> strings = new ArrayList<>(Arrays.asList(history));
         strings.add(String.valueOf(latestAttendance));
 
-        //直近3回分の在席情報のみ保存
-        if (strings.size() > 12) {
+        //直近30回分(チェックは10秒おき)の在席情報のみ保存
+        if (strings.size() > 30) {
             strings.remove(0);
         }
 
@@ -64,7 +64,7 @@ public final class Attendance {
                 listeners.forEach(listener -> listener.entered(person));
             }
         } else {
-            // 3回連続で不在状態を検知したら不在を通知
+            // 5分回連続で不在状態を検知したら不在を通知
             if (strings.stream().allMatch(e -> e.equals("false"))) {
                 logger.debug("{} left", person.name);
                 isAtSamuraism = false;

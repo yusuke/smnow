@@ -3,6 +3,7 @@ package smnow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import smnow.hall.HallListener;
+import smnow.slack.SlackListener;
 
 /**
  * Created by yusuke on 7/25/14.
@@ -35,13 +36,13 @@ public class Main implements Runnable {
         Person[] persons = Person.load();
         boolean dryRun = false;
 
-        Attendance attendance = new Attendance(new TwitterListener(dryRun), new HallListener(dryRun));
+        Attendance attendance = new Attendance(new TwitterListener(dryRun), new HallListener(dryRun), new SlackListener(dryRun));
         while (alive) {
             for (Person person : persons) {
                 attendance.recordAttendance(person, person.isAtSamuraism());
             }
             try {
-                Thread.sleep(1000 * 60 * 1);
+                Thread.sleep(1000 * 10 * 1);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
