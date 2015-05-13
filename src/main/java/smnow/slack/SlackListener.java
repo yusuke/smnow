@@ -11,6 +11,7 @@ import smnow.hall.ExtendedOptional;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 
 /**
  * Created by yusuke on 5/13/15.
@@ -29,26 +30,37 @@ import java.net.URL;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class SlackListner implements AttendanceListener {
+public class SlackListener implements AttendanceListener {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SlackListner.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SlackListener.class);
 
     private static final String SMNW = "ズムばう";
 
     private static final String HALL_API_URL = "https://hall.com/api/1/services/generic/";
 
+    private static final String SLACK_API_URL = "https://slack.com/api/chat.postMessage";
+
     private static final String SLACK_KEY = "slack.key";
+
+    public static final String GENERAL_CHANNEL = "slack.channel.general";
 
     private final boolean dryRun;
 
-    private final ExtendedOptional<String> hallKey;
+    private final ExtendedOptional<String> slackToken;
 
-    public SlackListner(boolean dryRun) {
+    private final ExtendedOptional<String> channel;
+
+    public SlackListener(boolean dryRun) {
         this.dryRun = dryRun;
-        this.hallKey = ExtendedOptional.ofNullable(GlobalProp.getProperty(SLACK_KEY));
-        this.hallKey
-                .ifPresent(key -> LOGGER.debug("hall.key=" + this.hallKey.get()))
-                .ifNotPresent(() -> LOGGER.debug("hall.key not set"));
+        this.slackToken = getKey(SLACK_KEY);
+        this.channel = getKey(GENERAL_CHANNEL);
+    }
+
+    private ExtendedOptional<String> getKey(String key) {
+        ExtendedOptional<String> opValue = ExtendedOptional.ofNullable(GlobalProp.getProperty(key));
+        opValue.ifPresent(k -> LOGGER.debug(key + "=" + k))
+                .ifNotPresent(() -> LOGGER.debug(key + " not set"));
+        return opValue;
     }
 
     @Override
@@ -74,22 +86,23 @@ public class SlackListner implements AttendanceListener {
     }
 
     private void sendMessage(String message) {
-        hallKey.ifPresent(key -> {
+        slackToken.ifPresent(key -> {
             HttpURLConnection connection = null;
             try {
-                URL url = new URL(HALL_API_URL + key);
+                URL url = new URL(SLACK_API_URL);
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setDoOutput(true);
                 connection.setRequestMethod("POST");
-                connection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
 
                 PrintWriter writer = new PrintWriter(connection.getOutputStream());
-                writer.print(toJson(message));
-                writer.flush();
+                writer.append("token=").append(slackToken.get()).append('&')
+                        .append("channel=").append(channel.get()).append('&')
+                        .append("text=").append(URLEncoder.encode(message, "UTF-8")).append('&')
+                        .append("username=").append(URLEncoder.encode(SMNW, "UTF-8")).flush();
 
                 int responseCode = connection.getResponseCode();
-                if (responseCode != 201) {
-                    LOGGER.info("エラーが返されたわー : " + responseCode);
+                if (responseCode != 200) {
+                    LOGGER.info("スラックに送れんかった : " + responseCode);
                 }
                 LOGGER.info("Hallにメッセージ投げられたはず！");
             } catch (Exception e) {
@@ -100,11 +113,5 @@ public class SlackListner implements AttendanceListener {
                 }
             }
         });
-    }
-
-    String toJson(String message) {
-        return "{\"title\":\"" + SMNW + "\",\"message\":\"" +
-                message.replaceAll("\"", "\\\\\"") +
-                "\"}";
     }
 }
