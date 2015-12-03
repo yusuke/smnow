@@ -1,5 +1,6 @@
 package smnow;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -25,7 +26,7 @@ import java.util.Properties;
  */
 public class GlobalProp {
     private static Properties prop = new Properties();
-    private static final String PROP_FILE_NAME = "smnow.properties";
+    private static final String PROP_FILE_NAME = System.getProperty("user.home") + File.separator + "smnow.properties";
 
     static {
         try (FileInputStream fis = new FileInputStream(PROP_FILE_NAME)) {
@@ -47,6 +48,11 @@ public class GlobalProp {
         } catch (IOException e) {
             throw new RuntimeException("failed to store properties");
         }
+    }
+
+    public static void main(String[] args) {
+        getProperty("hoge");
+        setProperty("hoge", "hoge");
     }
 }
 
