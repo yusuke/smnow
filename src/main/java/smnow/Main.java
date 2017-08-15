@@ -24,12 +24,17 @@ import smnow.slack.SlackListener;
  */
 public class Main implements Runnable {
     static Logger logger = LoggerFactory.getLogger(Main.class);
+    private long lastDoorOpenTime = System.currentTimeMillis();
 
     public static void main(String[] args) {
         new Main().run();
     }
 
     public boolean alive = true;
+
+    public void doorOpened(){
+        lastDoorOpenTime = System.currentTimeMillis();
+    }
 
     @Override
     public void run() {

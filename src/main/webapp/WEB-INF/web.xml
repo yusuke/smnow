@@ -5,7 +5,16 @@
   http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" metadata-complete="true">
 
     <listener>
-        <listener-class>SMBotListener</listener-class>
+        <listener-class>smnow.SMBotListener</listener-class>
     </listener>
+    <servlet>
+        <servlet-name>now</servlet-name>
+        <servlet-class>smnow.DoorServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>now</servlet-name>
+        <url-pattern>/now</url-pattern>
+    </servlet-mapping>
+
 
 </web-app>

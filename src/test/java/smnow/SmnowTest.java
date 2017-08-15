@@ -24,13 +24,14 @@ import static org.junit.Assert.*;
 public class SmnowTest {
     @Test
     public void 人員ロード() {
+        GlobalProp.loadProperties("./smnow.properties");
         Person[] persons = Person.load();
         assertEquals(3, persons.length);
     }
 
     @Test
     public void 在席チェックロジック() {
-        Person macmini = new Person("macmini7", "macmini7.local");
+        Person macmini = new Person("ymacmini7", "ymacmini7.local");
         assertTrue(macmini.isAtSamuraism());
         Person notexist = new Person("notexist", "notexist.local");
         assertFalse(notexist.isAtSamuraism());
@@ -69,9 +70,10 @@ public class SmnowTest {
         assertFalse(listener.entered);
         assertFalse(listener.left);
         listener.entered = false;listener.left = false;
-
-        attendance.recordAttendance(person, false);
-        //不在確認を3回すると通知する
+        //不在確認を30回すると通知する
+        for (int i = 0; i < 30; i++) {
+            attendance.recordAttendance(person, false);
+        }
         assertFalse(listener.entered);
         assertTrue(listener.left);
         listener.entered = false;listener.left = false;

@@ -1,8 +1,6 @@
-/**
+package smnow; /**
  * Created by yusuke on 12/9/14.
  */
-
-import smnow.Main;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContextEvent;
@@ -13,7 +11,7 @@ import java.io.IOException;
 
 public class SMBotListener implements ServletContextListener {
 
-    Main main = new Main();
+    static Main main = new Main();
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {

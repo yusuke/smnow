@@ -29,12 +29,16 @@ public class GlobalProp {
     private static final String PROP_FILE_NAME = System.getProperty("user.home") + File.separator + "smnow.properties";
 
     static {
-        try (FileInputStream fis = new FileInputStream(PROP_FILE_NAME)) {
+        loadProperties(PROP_FILE_NAME);
+    }
+    public static void loadProperties(String path){
+        try (FileInputStream fis = new FileInputStream(path)) {
             prop.load(fis);
         } catch (FileNotFoundException ignore) {
         } catch (IOException e) {
             throw new ExceptionInInitializerError(e);
         }
+
     }
 
     public static String getProperty(String key) {
